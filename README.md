@@ -29,7 +29,7 @@ is shorthand for `\some\long\path\to\your\install\of\PluginSDK`.
 
 #### In the Command Shell
    * `% cd PluginSDK`
-   * `% mkplugin -uns -c ADS`
+   * `% ./mkplugin -uns -c ADS`
    * `% make CaeUnsADS-dr`
    * All done
 
