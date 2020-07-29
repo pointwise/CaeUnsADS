@@ -1,9 +1,6 @@
-# CaeUnsADS
-The AeroDynamic Solutions, Inc. unstructured CAE plugin (ADS/Leo (unstructured))
+## Building the ADS/Leo (unstructured) CAE Export Plugin
 
-## Building the ADS/Leo (unstructured) Plugin
-
-To build the **ADS/Leo (unstructured)** plugin you must integrate the source code from 
+To build the **ADS/Leo (unstructured)** CAE export plugin you must integrate the source code from 
 this repository into your local PluginSDK installation.
 
 This plugin was created with the `mkplugin` options `-c` and `-caeu`.
