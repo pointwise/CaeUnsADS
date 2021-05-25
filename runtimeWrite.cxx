@@ -4,7 +4,7 @@
  * runtimeDestroy()
  *
  * Proprietary software product of Pointwise, Inc.
- * Copyright (c) 1995-2020 Pointwise, Inc.
+ * Copyright (c) 1995-2019 Pointwise, Inc.
  * All rights reserved.
  *
  ***************************************************************************/
@@ -27,24 +27,35 @@
 const char * const BcNames[] = {
     "FLOWTAN",         //  1
     "INFLOW",          //  2
-    "OUTFLOW",         //  3
-    "FARFIELD",        //  4
-    "NRINFLOW",        //  5
-    "NROUTFLOW",       //  6
-    "INVISCID",        //  7
-    "WALLF",           //  8
-    "WALLIQ",          //  9
-    "WALLIA",          // 10
-    "WALLIS",          // 11
-    "NMLINFLOW",       // 12
-    "PERIODIC",        // 13
-    "PERIODICSHDW",    // 14
-    "ISOTHERMAL",      // 15
-    "ADIABATIC",       // 16
-    "INTSCT",          // 17
-    "INTSCTSHDW",      // 18
-    "WALLFCHT",        // 19
-    "FMVINFLOW",       // 20
+	"INFLOWTANG",      //  3
+    "OUTFLOW",         //  4
+    "FARFIELD",        //  5
+    "NRINFLOW",        //  6
+    "NROUTFLOW",       //  7
+    "INVISCID",        //  8
+    "WALLF",           //  9
+    "WALLIQ",          // 10
+    "WALLIA",          // 11
+    "WALLIS",          // 12
+    "NMLINFLOW",       // 13
+    "PERIODIC",        // 14
+    "PERIODICSHDW",    // 15
+    "ISOTHERMAL",      // 16
+    "ADIABATIC",       // 17
+    "INTSCT",          // 18
+    "INTSCTSHDW",      // 19
+    "WALLFCHT",        // 20
+    "FMVINFLOW",       // 21
+    "NMPERIODIC",      // 22
+    "NMPERIODICSHDW",  // 23
+    "STRINTP",         // 24
+    "STRINTPSHDW",     // 25
+    "UNSTRINTP",       // 29
+    "UNSTRINTPSHDW",   // 27
+    "INTERNAL",        // 28
+    "INTERNALSHDW",    // 29
+    "SECTOR",          // 30
+    "SECTORSHDW",      // 31
     "BCERROR"
 };
 const PWP_UINT32 NumBcs = ARRAYSIZE(BcNames) - 1;
@@ -145,8 +156,36 @@ public:
                 prefix_[i] =
                     PWP_UINT32(-(100 * PWP_INT32(bcUsageCnt_[bc.tid - 1]) + 2));
                 break;
-            case 17:
-            case 18:
+            case 21:
+                prefix_[i] = 100 * bcUsageCnt_[bc.tid - 1] + 21;
+                break;
+            case 22:
+                prefix_[i] = 100 * bcUsageCnt_[bc.tid - 1] + 22;
+                break;
+            case 23:
+                prefix_[i] = 100 * bcUsageCnt_[bc.tid - 1] + 25;
+                break;
+            case 24:
+                prefix_[i] = 100 * bcUsageCnt_[bc.tid - 1] + 26;
+                break;
+            case 25:
+                prefix_[i] = 100 * bcUsageCnt_[bc.tid - 1] + 35;
+                break;
+            case 26:
+                prefix_[i] = 100 * bcUsageCnt_[bc.tid - 1] + 36;
+                break;
+            case 27:
+                prefix_[i] = 100 * bcUsageCnt_[bc.tid - 1] + 47;
+                break;
+            case 28:
+                prefix_[i] = 100 * bcUsageCnt_[bc.tid - 1] + 48;
+                break;
+            case 29:
+                prefix_[i] = 100 * bcUsageCnt_[bc.tid - 1] + 19;
+                break;
+            case 30:
+                prefix_[i] = 100 * bcUsageCnt_[bc.tid - 1] + 20;
+                break;
                 // no pairing needed for 17/18 - fall through
             default:
                 // Build BC usage id
@@ -172,13 +211,6 @@ public:
                 break;
             default:
                 continue;
-            }
-            if (usedPrefixPairs_.end() == usedPrefixPairs_.find(targetId)) {
-                // Could not find matching BC in pair!
-                std::ostringstream msg;
-                msg << "PERIODIC FACE '" << bc.name << "' (" << bc.tid << ":"
-                    << bc.id << ") does not have a match";
-                caeuSendWarningMsg(&rti_, msg.str().c_str(), ++warnId);
             }
         }
 
@@ -596,7 +628,7 @@ writeBC(CAEP_RTITEM &rti)
 static bool
 exportBCVAL(CAEP_RTITEM &rti)
 {
-    // Dump info comment header 
+    // Dump info comment header
     fputs(
         "******************************************************************\n"
         "*BOUNDARY TYPE    DEFINITION                                     *\n"
@@ -635,7 +667,7 @@ exportBCVAL(CAEP_RTITEM &rti)
 static bool
 exportBCTYPE(CAEP_RTITEM &rti)
 {
-    // Dump info comment header 
+    // Dump info comment header
     fputs(
         "******************************************************************\n"
         "***ADS BC NAME***********DESCRIPTION******************************\n"
